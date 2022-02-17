@@ -14,7 +14,7 @@ module.exports = {
       }
     },
     connection: {
-      filename: './data/recipes.db3'
+      filename: './data/cook_book.db3'
     }
   }
 }
