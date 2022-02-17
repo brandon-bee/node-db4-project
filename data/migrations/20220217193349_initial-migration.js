@@ -2,16 +2,36 @@
 exports.up = async function(knex) {
   await knex.schema
     .createTable('recipes', tbl => {
-      tbl.increments()
+      tbl.increments('recipe_id')
+      tbl.string('recipe_name', 128).notNullable().unique()
     })
     .createTable('ingredients', tbl => {
-      tbl.increments()
+      tbl.increments('ingredient_id')
+      tbl.string('ingredient_name', 128).notNullable().unique()
     })
     .createTable('steps', tbl => {
-      tbl.increments()
+      tbl.increments('step_id')
+      tbl.string('step_instructions', 256)
+      tbl.integer('step_number').notNullable()
+      tbl.integer('recipe_id')
+        .unsigned()
+        .notNullable()
+        .references('recipe_id')
+        .inTable('recipes')
     })
     .createTable('step_ingredients', tbl => {
-      tbl.increments()
+      tbl.increments('step_ingredient_id')
+      tbl.float('quantity').notNullable()
+      tbl.integer('step_id')
+        .unsigned()
+        .notNullable()
+        .references('step_id')
+        .inTable('steps')
+      tbl.integer('ingredient_id')
+        .unsigned()
+        .notNullable()
+        .references('ingredient_id')
+        .inTable('ingredients')
     })
 };
 
